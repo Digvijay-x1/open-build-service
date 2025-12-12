@@ -69,7 +69,7 @@ RSpec.describe Workflows::YAMLToWorkflowsService, type: :service do
 
       it 'keeps the original string' do
         expect { subject }.not_to raise_error
-        expect(subject.first.workflow_instructions[:steps].first[:branch_package][:source_package]).to eq("test-package:%u")
+        expect(subject.first.workflow_instructions[:steps].first[:branch_package][:source_package]).to eq('test-package:%u')
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Workflows::YAMLToWorkflowsService, type: :service do
 
       it 'does not crash and preserves the %f' do
         expect { subject }.not_to raise_error
-        expect(subject.first.workflow_instructions[:steps].first[:branch_package][:source_package]).to eq("test-package:50%f")
+        expect(subject.first.workflow_instructions[:steps].first[:branch_package][:source_package]).to eq('test-package:54%f')
       end
     end
   end

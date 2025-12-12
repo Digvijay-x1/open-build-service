@@ -47,8 +47,7 @@ module Workflows
 
       # Mapping the placeholder variables to their values from the webhook event payload
       placeholder_variables = SUPPORTED_PLACEHOLDER_VARIABLES.zip([scm_organization_name, scm_repository_name, pr_number, commit_sha, label]).to_h
-      # We trigger a TypeError if the workflow_configuration contains a %f (or others) and we pass a Hash to format.
-      # To avoid this, we use gsub to replace the variables.
+      # Explicit substitution via gsub allows safe use of placeholders
       workflow_configuration.gsub(/%\{([A-Za-z0-9_]+)\}/) do |match|
         key = Regexp.last_match(1).to_sym
         placeholder_variables.fetch(key, match)
