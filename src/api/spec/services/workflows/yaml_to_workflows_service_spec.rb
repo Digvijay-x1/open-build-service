@@ -71,5 +71,19 @@ RSpec.describe Workflows::YAMLToWorkflowsService, type: :service do
         expect { subject }.to raise_error(Token::Errors::WorkflowsYamlNotParsable, 'Unable to parse .obs/workflows.yml: malformed format string - %S')
       end
     end
+
+    context 'when workflows.yml contains a string instead of a YAML mapping' do
+      let(:workflows_yml_file) { 'string_content.yml' }
+      let(:request_payload) { workflow_run_github_payload }
+
+      before do
+        allow(File).to receive(:read).and_call_original
+        allow(File).to receive(:read).with(workflows_yml_file).and_return('just a string')
+      end
+
+      it 'raises a user-friendly error' do
+        expect { subject }.to raise_error(Token::Errors::WorkflowsYamlNotParsable, /expected a YAML mapping, got String/)
+      end
+    end
   end
 end
